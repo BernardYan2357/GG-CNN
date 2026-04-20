@@ -1,0 +1,35 @@
+# Default GGCNN2 Configuration
+
+data:
+  dataset_path: ./jacquard        # Can also be set via GGCNN2_DATASET_PATH env var
+  output_size: 300                 # Spatial size images/maps are resized to
+  include_depth: true
+  include_rgb: false               # Set true for depth+RGB (4-ch) input
+  train_split: 0.9                 # Fraction of data used for training
+  random_rotate: true              # Random 90° rotation augmentation
+  random_zoom: true                # Random zoom-out [0.5, 1.0] augmentation
+  num_workers: 4                   # DataLoader worker processes
+  pin_memory: true                 # Pin memory for CUDA transfers
+
+model:
+  input_channels: 1                # Overridden by include_depth/include_rgb
+  filter_sizes: [16, 16, 32, 16]
+  l3_k_size: 5
+  dilations: [2, 4]
+
+training:
+  epochs: 100
+  batch_size: 8
+  batches_per_epoch: 100
+  val_batches: 250
+  lr: 0.001
+  lr_step: 20                      # StepLR: decay every N epochs
+  lr_gamma: 0.5                    # StepLR: multiply LR by this factor
+  iou_threshold: 0.25              # IoU threshold for a "correct" grasp
+  seed: 42
+  multi_gpu: false
+
+logging:
+  save_dir: trained_models
+  log_level: INFO
+  tensorboard: true
