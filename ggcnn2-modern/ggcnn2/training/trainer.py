@@ -132,7 +132,6 @@ def validate_epoch(
     }
     model.eval()
     batch_idx = 0
-    length = len(loader)
 
     for x, y, idxs, rots, zooms in loader:
         if batch_idx >= batches_per_epoch:
@@ -144,10 +143,10 @@ def validate_epoch(
         loss_dict = model.compute_loss(xc, yc)
         loss = loss_dict["loss"]
 
-        results["loss"] += loss.item() / max(length, 1)
+        results["loss"] += loss.item()
         for name, val in loss_dict["losses"].items():
             results["losses"].setdefault(name, 0.0)
-            results["losses"][name] += val.item() / max(length, 1)
+            results["losses"][name] += val.item()
 
         pred = loss_dict["pred"]
         q_map, ang_map, w_map = post_process(pred["pos"], pred["cos"], pred["sin"], pred["width"])
@@ -167,6 +166,12 @@ def validate_epoch(
                 results["failed"] += 1
 
         batch_idx += 1
+
+    # Average losses over actual batches processed
+    if batch_idx > 0:
+        results["loss"] /= batch_idx
+        for k in results["losses"]:
+            results["losses"][k] /= batch_idx
 
     total = results["correct"] + results["failed"]
     results["acc"] = results["correct"] / total if total > 0 else 0.0

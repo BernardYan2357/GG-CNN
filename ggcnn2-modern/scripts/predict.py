@@ -18,6 +18,7 @@ import logging
 import os
 import sys
 
+import matplotlib.pyplot as plt
 import numpy as np
 import torch
 
@@ -82,7 +83,6 @@ def main() -> None:
         gt_collection=None,
         save_path=args.out,
     )
-    import matplotlib.pyplot as plt
     plt.close(fig)
     logger.info("Visualization saved to: %s", args.out)
 

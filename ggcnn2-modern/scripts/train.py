@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import json
 import logging
 import os
 import random
@@ -217,7 +218,6 @@ def main() -> None:
     os.makedirs(save_dir, exist_ok=True)
 
     # Persist config
-    import json
     with open(os.path.join(save_dir, "config.json"), "w") as f:
         json.dump(cfg.to_dict(), f, indent=2)
 

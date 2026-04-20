@@ -20,6 +20,7 @@ import logging
 import os
 import sys
 
+import matplotlib.pyplot as plt
 import torch
 from torch.utils.data import DataLoader
 
@@ -115,7 +116,6 @@ def main() -> None:
                     gt_collection=grasps_true,
                     save_path=os.path.join(args.vis_dir, f"sample_{i:04d}.png"),
                 )
-                import matplotlib.pyplot as plt
                 plt.close(fig)
                 vis_count += 1
 
